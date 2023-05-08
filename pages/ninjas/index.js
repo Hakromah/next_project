@@ -1,8 +1,36 @@
-const Ninjas = () => {
+import Head from 'next/head';
+import styles from '../../styles/Ninjas.module.css';
+import Link from 'next/link';
+
+export const getStaticProps = async () => {
+	const res = await fetch('https://jsonplaceholder.typicode.com/users');
+	const data = await res.json();
+
+	return {
+		props: { ninjas: data },
+	};
+};
+
+
+const Ninjas = ({ ninjas }) => {
 	return (
-		<div>
-			<h1>Ninjas Comonent</h1>
-		</div>
+		<>
+			<Head>
+				<title>Ninjas | Ninjas</title>
+				<meta name="keywords" content="ninjas" />
+			</Head>
+
+			<div>
+				<h1>All Ninjas</h1>
+				{ninjas.map((ninja) => (
+					<Link href={'/ninjas/' + ninja.id} key={ninja.id}>
+						<span className={styles.single}>
+							<h3>{ninja.name}</h3>
+						</span>
+					</Link>
+				))}
+			</div>
+		</>
 	);
 };
 
